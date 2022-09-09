@@ -1,5 +1,6 @@
 package kbsc.greenFunding.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -50,5 +51,11 @@ public class Project {
     public void addUpcyclingList(Upcycling upcycling) {
         upcyclingList.add(upcycling);
         upcycling.setProject(this);
+    }
+
+    @Builder(builderClassName = "projectTypeBuilder", builderMethodName="projectTypeBuilder")
+    public Project(ProjectType projectType, MaterialCategory category) {
+        this.projectType = projectType;
+        this.category = category;
     }
 }
