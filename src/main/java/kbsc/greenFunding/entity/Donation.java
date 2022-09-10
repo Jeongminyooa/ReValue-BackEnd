@@ -17,9 +17,11 @@ public class Donation {
     @Column(name = "donation_id")
     private Long id;
 
-    private int totalWeight;
+    private int totalWeight; // 목표 무게
 
-    private int minWeight;
+    private int minWeight; // 일인당 최소 무게
+
+    private int remainingWeight; // 잔여 무게
 
     @Enumerated(EnumType.STRING)
     private DonationMethod method;
