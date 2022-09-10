@@ -5,6 +5,7 @@ import kbsc.greenFunding.dto.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @Slf4j
 @RestControllerAdvice
@@ -20,5 +21,15 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNoEnumException(NoEnumException ex) {
         log.error("handleNoEnumException", ex);
         return new ErrorResponse(ex.getErrorCode());
+    }
+
+    /**
+     * 파일 업로드 용량 초과시 발생
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ErrorResponse handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException e) {
+        log.error("handleMaxUploadSizeExceededException", e);
+        return new ErrorResponse(ErrorCode.FILE_SIZE_EXCEED);
     }
 }

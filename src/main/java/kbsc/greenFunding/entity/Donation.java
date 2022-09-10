@@ -1,5 +1,6 @@
 package kbsc.greenFunding.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -29,4 +30,9 @@ public class Donation {
     private String address;
 
     private String description;
+
+    @Builder(builderClassName = "donaionBuilder", builderMethodName="donaionBuilder")
+    public Donation(int totalWeight) {
+        this.totalWeight = totalWeight;
+    }
 }
