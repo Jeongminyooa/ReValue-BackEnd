@@ -32,11 +32,22 @@ public class Donation {
     private String description;
 
     @Builder(builderClassName = "donationBuilder", builderMethodName="donationBuilder")
-    public Donation(int totalWeight) {
-        this.totalWeight = totalWeight;
+    public Donation(int totalWeight, int remainingWeight) {
+        if(Integer.valueOf(this.totalWeight) == null) {
+            this.totalWeight = totalWeight;
+        }
+
+        this.remainingWeight = remainingWeight;
     }
 
     public void updateTotalWeight(int totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    public void update(String description, int minWeight, String address, DonationMethod method) {
+        this.description = description;
+        this.minWeight = minWeight;
+        this.address = address;
+        this.method = method;
     }
 }

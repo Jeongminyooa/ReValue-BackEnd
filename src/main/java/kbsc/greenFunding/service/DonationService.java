@@ -1,8 +1,13 @@
 package kbsc.greenFunding.service;
 
 import kbsc.greenFunding.dto.project.DonationRewardReq;
+import kbsc.greenFunding.dto.project.DonationRewardRes;
 import kbsc.greenFunding.dto.project.ProjectDonationInfoRes;
+import kbsc.greenFunding.dto.response.ErrorCode;
+import kbsc.greenFunding.entity.Donation;
+import kbsc.greenFunding.entity.DonationMethod;
 import kbsc.greenFunding.entity.Project;
+import kbsc.greenFunding.exception.NoEnumException;
 import kbsc.greenFunding.repository.DonationJpaRepository;
 import kbsc.greenFunding.repository.ProjectJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,22 @@ public class DonationService {
         res.setTotalWeight(project.getDonation().getTotalWeight());
 
         return res;
+    }
+
+    @Transactional
+    public DonationRewardRes postDonationReward(Long projectId, DonationRewardReq donationRewardReq) {
+        Project project = projectJpaRepo.findById(projectId).orElseThrow();
+        Donation donation = project.getDonation();
+
+        try {
+            donation.update(donationRewardReq.getDescription(),
+                    donationRewardReq.getMinWeight(),
+                    donationRewardReq.getAddress(),
+                    DonationMethod.valueOf(donationRewardReq.getDonationMethod()));
+        } catch(IllegalArgumentException e) {
+            throw new NoEnumException("no enum", ErrorCode.NO_ENUM_CONSTANT);
+        }
+        return new DonationRewardRes(project.getId(), donation.getId());
     }
 
 }

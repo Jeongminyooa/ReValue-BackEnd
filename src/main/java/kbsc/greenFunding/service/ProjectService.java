@@ -84,6 +84,7 @@ public class ProjectService {
             } else {
                 Donation donation = Donation.donationBuilder()
                         .totalWeight(projectPlanReq.getTotalWeight())
+                        .remainingWeight(projectPlanReq.getTotalWeight())
                         .build();
                 donationJpaRepo.save(donation);
 

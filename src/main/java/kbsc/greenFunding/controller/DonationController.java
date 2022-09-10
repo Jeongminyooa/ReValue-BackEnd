@@ -2,6 +2,7 @@ package kbsc.greenFunding.controller;
 
 
 import kbsc.greenFunding.dto.project.DonationRewardReq;
+import kbsc.greenFunding.dto.project.DonationRewardRes;
 import kbsc.greenFunding.dto.project.ProjectDonationInfoRes;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
@@ -20,4 +21,9 @@ public class DonationController {
         return ApiResponse.success(ApiCode.SUCCESS, donationService.getProjectDonationInfo(projectId));
     }
 
+    @PostMapping("/{id}")
+    public ApiResponse<DonationRewardRes> createDonationReward(@PathVariable("id")Long projectId,
+                                                  @RequestBody DonationRewardReq donationRewardReq) {
+        return ApiResponse.success(ApiCode.SUCCESS, donationService.postDonationReward(projectId, donationRewardReq));
+    }
 }
