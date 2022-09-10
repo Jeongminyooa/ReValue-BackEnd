@@ -42,7 +42,10 @@ public class Upcycling {
     }
 
     @Builder(builderClassName = "upcyclingBuilder", builderMethodName="upcyclingBuilder")
-    public Upcycling(int totalCount) {
+    public Upcycling(String title, int price, String description, int totalCount) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
         this.totalCount = totalCount;
     }
 }

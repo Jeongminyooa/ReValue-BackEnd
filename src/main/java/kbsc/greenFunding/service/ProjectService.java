@@ -43,7 +43,7 @@ public class ProjectService {
     }
 
     // 프로젝트 info 저장
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional
     public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageName, Long projectId) {
         StringBuilder imageUrl = new StringBuilder();
         imageUrl.append("https://revalue.s3.us-west-2.amazonaws.com/");
@@ -57,7 +57,7 @@ public class ProjectService {
     }
 
     // 프로젝트 plan 저장
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional
     public Long postProjectPlan(ProjectPlanReq projectPlanReq, Long projectId) {
 
         Project project = projectJpaRepo.findById(projectId).orElseThrow();

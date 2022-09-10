@@ -23,7 +23,7 @@ public class DonationService {
     private final DonationJpaRepository donationJpaRepo;
     private final ProjectJpaRepository projectJpaRepo;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ProjectDonationInfoRes getProjectDonationInfo(Long projectId) {
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
