@@ -58,4 +58,11 @@ public class Project {
         this.projectType = projectType;
         this.category = category;
     }
+
+    // update project info
+    public void updateProjectInfo(String title, String thumbnail, String content) {
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.content = content;
+    }
 }

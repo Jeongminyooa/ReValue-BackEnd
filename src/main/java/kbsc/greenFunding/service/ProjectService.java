@@ -1,5 +1,6 @@
 package kbsc.greenFunding.service;
 
+import kbsc.greenFunding.dto.project.ProjectInfoReq;
 import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.Project;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,15 @@ public class ProjectService {
         } catch(IllegalArgumentException e) {
             throw new NoEnumException("no enum", ErrorCode.NO_ENUM_CONSTANT);
         }
+    }
+
+    @Transactional(rollbackFor=Exception.class)
+    public Long postProjectInfo(String title, String imageUrl, String content, Long projectId) {
+       Project project = projectRepo.findById(projectId).orElseThrow();
+
+       project.updateProjectInfo(title, imageUrl, content);
+
+       return project.getId();
     }
 
 }
