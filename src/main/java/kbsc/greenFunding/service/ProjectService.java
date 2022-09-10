@@ -1,5 +1,6 @@
 package kbsc.greenFunding.service;
 
+import kbsc.greenFunding.dto.project.ProjectDonationInfoRes;
 import kbsc.greenFunding.dto.project.ProjectInfoReq;
 import kbsc.greenFunding.dto.project.ProjectPlanReq;
 import kbsc.greenFunding.dto.project.ProjectTypeReq;
