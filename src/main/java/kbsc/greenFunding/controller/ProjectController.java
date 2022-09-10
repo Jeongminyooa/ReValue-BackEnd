@@ -1,9 +1,11 @@
 package kbsc.greenFunding.controller;
 
 import kbsc.greenFunding.dto.project.ProjectInfoReq;
+import kbsc.greenFunding.dto.project.ProjectPlanReq;
 import kbsc.greenFunding.dto.project.ProjectTypeReq;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
+import kbsc.greenFunding.entity.Project;
 import kbsc.greenFunding.service.AwsS3Service;
 import kbsc.greenFunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +38,16 @@ public class ProjectController {
 
         String imageUrl = awsS3Service.uploadImage(imageFile);
 
-        projectService.postProjectInfo(projectInfoReq, imageUrl, projectId);
+        projectId = projectService.postProjectInfo(projectInfoReq, imageUrl, projectId);
 
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
 
+    @PostMapping("/{id}/saved-plan")
+    public ApiResponse<Long> saveProjectPlan(@PathVariable("id") Long projectId,
+                                             @RequestBody ProjectPlanReq projectPlanReq) {
+        projectId = projectService.postProjectPlan(projectPlanReq, projectId);
+
+        return ApiResponse.success(ApiCode.SUCCESS, projectId);
+    }
 }
