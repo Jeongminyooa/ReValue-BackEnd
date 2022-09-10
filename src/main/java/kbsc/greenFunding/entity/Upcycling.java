@@ -1,5 +1,6 @@
 package kbsc.greenFunding.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -38,5 +39,10 @@ public class Upcycling {
     public void setProject(Project project) {
         this.project = project;
         project.getUpcyclingList().add(this);
+    }
+
+    @Builder(builderClassName = "upcyclingBuilder", builderMethodName="upcyclingBuilder")
+    public Upcycling(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

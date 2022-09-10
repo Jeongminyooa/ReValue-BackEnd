@@ -31,8 +31,12 @@ public class Donation {
 
     private String description;
 
-    @Builder(builderClassName = "donaionBuilder", builderMethodName="donaionBuilder")
+    @Builder(builderClassName = "donationBuilder", builderMethodName="donationBuilder")
     public Donation(int totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public void updateTotalWeight(int totalWeight) {
         this.totalWeight = totalWeight;
     }
 }
