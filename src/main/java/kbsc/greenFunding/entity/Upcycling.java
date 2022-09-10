@@ -30,9 +30,9 @@ public class Upcycling {
     @Nullable
     private int totalCount;
 
-    // 구매 수량 <- 변수명 변경
+    // 잔여 수량
     @Nullable
-    private int count;
+    private int remainingCount;
 
     //== 연관관계 메서드 ==//
     public void setProject(Project project) {

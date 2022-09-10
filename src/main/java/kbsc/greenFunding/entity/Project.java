@@ -4,6 +4,7 @@ import kbsc.greenFunding.dto.project.ProjectPlanReq;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,7 +44,11 @@ public class Project {
 
     private LocalDateTime endDate;
 
+    @Nullable
     private int amount; //목표 금액
+
+    @Nullable
+    private int remainingAmount; // 잔여 금액
 
     @Enumerated(EnumType.STRING)
     private MaterialCategory category;
