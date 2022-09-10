@@ -1,6 +1,7 @@
 package kbsc.greenFunding.service;
 
 import kbsc.greenFunding.dto.project.ProjectInfoReq;
+import kbsc.greenFunding.dto.project.ProjectTypeReq;
 import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.Project;
@@ -22,13 +23,13 @@ public class ProjectService {
 
     // 프로젝트 type, category 저장
     @Transactional(rollbackFor=Exception.class)
-    public Long postProjectType(Long userId, String projectType, String category) {
+    public Long postProjectType(Long userId, ProjectTypeReq projectTypeReq) {
         try {
             // User user = userRepository.findById(userId).orElseThrow();
 
             Project project = Project.projectTypeBuilder()
-                    .projectType(ProjectType.valueOf(projectType))
-                    .category(MaterialCategory.valueOf(category))
+                    .projectType(ProjectType.valueOf(projectTypeReq.getProjectType()))
+                    .category(MaterialCategory.valueOf(projectTypeReq.getCategory()))
                     .build();
 
             Project projectId = projectRepo.save(project);
@@ -39,13 +40,13 @@ public class ProjectService {
         }
     }
 
+    // 프로젝트 info 저장
     @Transactional(rollbackFor=Exception.class)
-    public Long postProjectInfo(String title, String imageUrl, String content, Long projectId) {
+    public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageUrl, Long projectId) {
        Project project = projectRepo.findById(projectId).orElseThrow();
 
-       project.updateProjectInfo(title, imageUrl, content);
+       project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getContent());
 
        return project.getId();
     }
-
 }

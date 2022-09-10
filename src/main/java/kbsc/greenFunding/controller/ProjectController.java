@@ -1,7 +1,7 @@
 package kbsc.greenFunding.controller;
 
 import kbsc.greenFunding.dto.project.ProjectInfoReq;
-import kbsc.greenFunding.dto.project.ProjectTypeDto;
+import kbsc.greenFunding.dto.project.ProjectTypeReq;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
 import kbsc.greenFunding.service.AwsS3Service;
@@ -19,12 +19,12 @@ public class ProjectController {
     private final AwsS3Service awsS3Service;
 
     @PostMapping("/saved-type")
-    public ApiResponse<Long> saveProjectType(@RequestBody ProjectTypeDto dto) {
+    public ApiResponse<Long> saveProjectType(@RequestBody ProjectTypeReq projectTypeReq) {
         // jwt - userId
 
         Long userId = Long.valueOf(1);
 
-        Long projectId = projectService.postProjectType(userId, dto.getProjectType(), dto.getCategory());
+        Long projectId = projectService.postProjectType(userId, projectTypeReq);
 
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
@@ -36,7 +36,7 @@ public class ProjectController {
 
         String imageUrl = awsS3Service.uploadImage(imageFile);
 
-        projectService.postProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getContent(), projectId);
+        projectService.postProjectInfo(projectInfoReq, imageUrl, projectId);
 
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
