@@ -1,5 +1,6 @@
 package kbsc.greenFunding.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,16 +9,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
 public class DonationOrder {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "donation_order_id")
     private Long id;
 
-    private int weight; //kg
+    private int weight; //무게
 
     private LocalDateTime orderDate; // 신청 날짜
+
+    private DonationMethod method; // 기부 방법
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "donation_id")

@@ -58,9 +58,7 @@ public class ProjectService {
 
         project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl.toString(), projectInfoReq.getContent());
 
-        projectJpaRepo.save(project);
-
-        return project.getId();
+       return project.getId();
     }
 
     // 프로젝트 plan 저장
