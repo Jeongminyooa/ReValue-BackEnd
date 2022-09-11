@@ -43,6 +43,8 @@ public class Project {
 
     private String content;
 
+    private String summary;
+
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;

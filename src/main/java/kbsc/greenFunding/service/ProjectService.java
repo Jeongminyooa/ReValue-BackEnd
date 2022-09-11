@@ -8,12 +8,16 @@ import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.entity.*;
 import kbsc.greenFunding.exception.NoEnumException;
 import kbsc.greenFunding.repository.DonationJpaRepository;
+import kbsc.greenFunding.repository.ImageJpaRepository;
 import kbsc.greenFunding.repository.ProjectJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +26,7 @@ import java.util.Optional;
 public class ProjectService {
     private final ProjectJpaRepository projectJpaRepo;
     private final DonationJpaRepository donationJpaRepo;
+    private final ImageJpaRepository imageJpaRepo;
 
     // 프로젝트 type, category 저장
     @Transactional(rollbackFor=Exception.class)
@@ -52,6 +57,8 @@ public class ProjectService {
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
         project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl.toString(), projectInfoReq.getContent());
+
+        projectJpaRepo.save(project);
 
         return project.getId();
     }
@@ -95,6 +102,33 @@ public class ProjectService {
         } else {
             project.updateAmount(projectPlanReq.getAmount(), projectPlanReq.getAmount());
         }
+        return project.getId();
+    }
+
+    @Transactional(rollbackFor=Exception.class)
+    public Long postProjectDescr(Long projectId, List<String> fileUrlList) {
+        Project project = projectJpaRepo.findById(projectId).orElseThrow();
+
+        List<Image> imageEntityList = new ArrayList<Image>();
+
+        // 이미지 파일 DB 관리
+        fileUrlList.forEach(fileUrl -> {
+            StringBuilder imageUrl = new StringBuilder();
+            imageUrl.append("https://revalue.s3.us-west-2.amazonaws.com/");
+            imageUrl.append(fileUrl);
+
+            Image image = Image.builder()
+                    .fileUrl(imageUrl.toString())
+                    .build();
+            image.setProject(project);
+
+            imageEntityList.add(image);
+        });
+
+        imageJpaRepo.saveAll(imageEntityList);
+
+        // project.updateDescription(description);
+
         return project.getId();
     }
 }

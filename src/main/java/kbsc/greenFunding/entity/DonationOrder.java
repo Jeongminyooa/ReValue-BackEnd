@@ -15,7 +15,7 @@ public class DonationOrder {
     @Column(name = "donation_order_id")
     private Long id;
 
-    private int count; //수량
+    private int weight; //kg
 
     private LocalDateTime orderDate; // 신청 날짜
 
