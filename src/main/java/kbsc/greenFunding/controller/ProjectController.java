@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/projects")
 @RequiredArgsConstructor
@@ -50,4 +52,15 @@ public class ProjectController {
 
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
+
+    @PostMapping("/{id}/saved-content")
+    public ApiResponse<Long> saveProjectDescription(@PathVariable("id") Long projectId,
+                                                       @RequestPart("fileList") List<MultipartFile> fileList) {
+        List<String> fileUrlList = awsS3Service.uploadImage(fileList);
+
+        projectId = projectService.postProjectDescr(projectId, fileUrlList);
+
+        return ApiResponse.success(ApiCode.SUCCESS, projectId);
+    }
+
 }

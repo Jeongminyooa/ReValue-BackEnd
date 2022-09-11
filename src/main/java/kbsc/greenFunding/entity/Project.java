@@ -31,6 +31,9 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<Upcycling> upcyclingList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project")
+    private List<Image> imageList = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private ProjectType projectType;
 
@@ -39,6 +42,8 @@ public class Project {
     private String thumbnail;
 
     private String content;
+
+    private String summary;
 
     private LocalDateTime startDate;
 
@@ -57,6 +62,13 @@ public class Project {
     public void addUpcyclingList(Upcycling upcycling) {
         upcyclingList.add(upcycling);
         upcycling.setProject(this);
+    }
+    //== 연관관계 메서드==//
+    public void addImageList(Image image) {
+        imageList.add(image);
+        if(image.getProject() != this) {
+            image.setProject(this);
+        }
     }
 
     public void setDonation(Donation donation) {
@@ -79,5 +91,12 @@ public class Project {
     public void updateProjectPlan(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public void updateAmount(int amount, int remainingAmount) {
+        if(Integer.valueOf(this.amount) == null) {
+            this.amount = amount;
+        }
+        this.remainingAmount = remainingAmount;
     }
 }
