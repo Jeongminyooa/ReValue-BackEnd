@@ -15,13 +15,12 @@ public class ProjectRepository {
 
     public Project getProjectDetail(Long projectId) {
         return em.createQuery("select distinct p from Project p" +
-                        " join fetch p.upcyclingList ul" +
+                        " left join fetch p.upcyclingList ul" +
                         " join fetch p.user u" +
                         " left join fetch p.donation d" +
                         " where p.id = :projectId", Project.class)
                 .setParameter("projectId", projectId)
                 .getSingleResult();
-
     }
 
     public List<Project> findAllWithDonation() {
