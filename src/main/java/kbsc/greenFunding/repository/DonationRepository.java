@@ -1,7 +1,7 @@
 package kbsc.greenFunding.repository;
 
-import kbsc.greenFunding.entity.Donation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface DonationRepository extends JpaRepository<Donation, Long> {
+@Repository
+public class DonationRepository {
 }
