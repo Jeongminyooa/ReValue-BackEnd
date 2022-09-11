@@ -71,6 +71,10 @@ public class Project {
         }
     }
 
+    public void updateRemainingAmount(int newAmount) {
+        this.remainingAmount -= newAmount;
+    }
+
     public void setDonation(Donation donation) {
         this.donation = donation;
     }

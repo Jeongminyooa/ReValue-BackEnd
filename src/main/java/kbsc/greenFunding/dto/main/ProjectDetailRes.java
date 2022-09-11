@@ -4,6 +4,8 @@ import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.ProjectType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;

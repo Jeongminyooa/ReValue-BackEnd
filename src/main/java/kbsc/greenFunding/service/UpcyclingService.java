@@ -42,7 +42,7 @@ public class UpcyclingService {
 
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
-        Upcycling upCycling = Upcycling.upcyclingBuilder()
+        Upcycling upCycling = Upcycling.builder()
                 .title(upcyclingRewardReq.getTitle())
                 .price(upcyclingRewardReq.getPrice())
                 .description(upcyclingRewardReq.getDescription())

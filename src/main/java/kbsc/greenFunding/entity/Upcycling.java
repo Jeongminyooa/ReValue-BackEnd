@@ -1,15 +1,15 @@
 package kbsc.greenFunding.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Upcycling {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,11 +41,17 @@ public class Upcycling {
         project.getUpcyclingList().add(this);
     }
 
+    /*
     @Builder(builderClassName = "upcyclingBuilder", builderMethodName="upcyclingBuilder")
     public Upcycling(String title, int price, String description, int totalCount) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.totalCount = totalCount;
+    }
+     */
+
+    public void updateRemainingCount(int count) {
+        this.remainingCount -= count;
     }
 }

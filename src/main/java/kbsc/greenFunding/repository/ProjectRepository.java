@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,5 +22,11 @@ public class ProjectRepository {
                 .setParameter("projectId", projectId)
                 .getSingleResult();
 
+    }
+
+    public List<Project> findAllWithDonation() {
+        return em.createQuery("select distinct p from Project p" +
+                " join fetch p.donation d", Project.class)
+                .getResultList();
     }
 }

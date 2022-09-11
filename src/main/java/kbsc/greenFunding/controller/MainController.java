@@ -3,12 +3,15 @@ package kbsc.greenFunding.controller;
 import kbsc.greenFunding.dto.main.DonationReq;
 import kbsc.greenFunding.dto.main.MainListRes;
 import kbsc.greenFunding.dto.main.ProjectDetailRes;
+import kbsc.greenFunding.dto.main.UpcyclingReq;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
 import kbsc.greenFunding.entity.DonationMethod;
 import kbsc.greenFunding.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +35,13 @@ public class MainController {
 
     @PostMapping("/donation")
     public ApiResponse<Long> saveDonation(@RequestBody DonationReq donationReq) {
-
         Long orderId = mainService.saveDonation(donationReq);
+        return ApiResponse.success(ApiCode.SUCCESS, orderId);
+    }
+
+    @PostMapping("/reward")
+    public ApiResponse<Long> saveReward(@RequestBody List<UpcyclingReq> upcyclingReqs) {
+        Long orderId = mainService.saveReward(upcyclingReqs);
         return ApiResponse.success(ApiCode.SUCCESS, orderId);
     }
 
