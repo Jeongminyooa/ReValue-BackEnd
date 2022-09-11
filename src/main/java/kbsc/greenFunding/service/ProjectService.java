@@ -9,21 +9,19 @@ import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.Project;
 import kbsc.greenFunding.entity.ProjectType;
 import kbsc.greenFunding.exception.NoEnumException;
-import kbsc.greenFunding.repository.DonationRepository;
-import kbsc.greenFunding.repository.ProjectRepository;
+import kbsc.greenFunding.repository.DonationJpaRepository;
+import kbsc.greenFunding.repository.ProjectJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectService {
-    private final ProjectRepository projectRepo;
-    private final DonationRepository donationRepository;
+    private final ProjectJpaRepository projectJpaRepo;
+    private final DonationJpaRepository donationRepository;
 
     // 프로젝트 type, category 저장
     @Transactional(rollbackFor=Exception.class)
@@ -36,7 +34,7 @@ public class ProjectService {
                     .category(MaterialCategory.valueOf(projectTypeReq.getCategory()))
                     .build();
 
-            Project projectId = projectRepo.save(project);
+            Project projectId = projectJpaRepo.save(project);
 
             return projectId.getId();
         } catch(IllegalArgumentException e) {
@@ -47,7 +45,7 @@ public class ProjectService {
     // 프로젝트 info 저장
     @Transactional(rollbackFor=Exception.class)
     public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageUrl, Long projectId) {
-       Project project = projectRepo.findById(projectId).orElseThrow();
+       Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
        project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getContent());
 
@@ -57,7 +55,7 @@ public class ProjectService {
     @Transactional(rollbackFor=Exception.class)
     public Long postProjectPlan(ProjectPlanReq projectPlanReq, Long projectId) {
 
-        Project project = projectRepo.findById(projectId).orElseThrow();
+        Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
         if(project.getProjectType() == ProjectType.ALL) {
 

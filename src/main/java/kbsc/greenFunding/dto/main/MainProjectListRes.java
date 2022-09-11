@@ -19,8 +19,10 @@ public class MainProjectListRes {
     private ProjectType projectType; // 기부만, 리워드만, 모두
     private String thumbnail;
     private String title;
+    private String content;
     private int donationRate;
     private int rewardRate;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    // private LocalDate startDate;
+    // private LocalDate endDate;
+    private Long remainingDate;
 }
