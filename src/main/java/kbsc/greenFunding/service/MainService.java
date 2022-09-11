@@ -39,18 +39,20 @@ public class MainService {
 
         for(Project project : projects) {
             ProjectType type = project.getProjectType();
-            System.out.println("Period = " + Duration.between(LocalDateTime.now(), project.getEndDate()).toDays());
+            //System.out.println("Period = " + Duration.between(LocalDateTime.now(), project.getEndDate()).toDays());
             projectBuilder.projectId(project.getId()).category(project.getCategory()).projectType(type)
-                    .thumbnail(project.getThumbnail()).title(project.getTitle()).content(project.getContent())
-                    .remainingDate(Duration.between(LocalDateTime.now(), project.getEndDate()).toDays());
+                    .thumbnail(project.getThumbnail()).title(project.getTitle()).content(project.getContent());
+                    //.remainingDate(Duration.between(LocalDateTime.now(), project.getEndDate()).toDays());
 
             if(type.equals(ProjectType.ALL)) { // 기부 & 리워드
+                // 기부 달성률 = (기부.목표 무게 - 기부.잔여무게) / 기부.목표무게 * 100
+                // project의 달성률 = (목표금액 - 잔여금액) / 목표금액 * 100
             }
             else if(type.equals(ProjectType.DONATION)) { // 기부만
-
+                // 기부 달성률 = (기부.목표 무게 - 기부.잔여무게) / 기부.목표무게 * 100
             }
             else if(type.equals(ProjectType.REWARD)){ // 리워드만
-
+                // project의 달성률 = (목표금액 - 잔여금액) / 목표금액 * 100
             }
             projectResList.add(projectBuilder.build());
         }
@@ -116,4 +118,10 @@ public class MainService {
         donationOrderJpaRepository.save(order);
         return order.getId();
     }
+
+    // 리워드 신청 시
+    /**
+     * project에 있는 remainingAmount 계산 해주기
+     * 리워드별 잔여 수량(remainingCount) 계산
+     */
 }

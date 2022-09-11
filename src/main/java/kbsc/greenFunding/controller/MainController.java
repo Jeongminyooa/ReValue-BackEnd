@@ -17,7 +17,7 @@ public class MainController {
 
     private final MainService mainService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ApiResponse<MainListRes> getMainList() {
         MainListRes mainList = mainService.getMainList();
 
