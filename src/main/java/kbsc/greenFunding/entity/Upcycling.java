@@ -1,5 +1,6 @@
 package kbsc.greenFunding.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Upcycling {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,11 +44,4 @@ public class Upcycling {
         project.getUpcyclingList().add(this);
     }
 
-    @Builder(builderClassName = "upcyclingBuilder", builderMethodName="upcyclingBuilder")
-    public Upcycling(String title, int price, String description, int totalCount) {
-        this.title = title;
-        this.price = price;
-        this.description = description;
-        this.totalCount = totalCount;
-    }
 }

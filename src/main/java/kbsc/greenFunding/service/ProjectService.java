@@ -53,7 +53,7 @@ public class ProjectService {
     public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageUrl, Long projectId) {
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
-        project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getContent());
+        project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getSummary());
 
        return project.getId();
     }
@@ -67,10 +67,11 @@ public class ProjectService {
         if(project.getProjectType() == ProjectType.ALL) {
             // 기존 정보가 있는지 확인
             if(project.getDonation() != null) {
-                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight());
+                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight(), projectPlanReq.getTotalWeight());
             } else {
                 Donation donation = Donation.donationBuilder()
                         .totalWeight(projectPlanReq.getTotalWeight())
+                        .remainingWeight(projectPlanReq.getTotalWeight())
                         .build();
 
                 donationJpaRepo.save(donation);
@@ -82,7 +83,7 @@ public class ProjectService {
         } else if(project.getProjectType() == ProjectType.DONATION) {
             // 기존 정보가 있는지 확인
             if(project.getDonation() != null) {
-                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight());
+                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight(), projectPlanReq.getTotalWeight());
             } else {
                 Donation donation = Donation.donationBuilder()
                         .totalWeight(projectPlanReq.getTotalWeight())
@@ -118,7 +119,7 @@ public class ProjectService {
 
         imageJpaRepo.saveAll(imageEntityList);
 
-        //project.updateContent(content);
+        project.updateContent(content);
 
         return project.getId();
     }

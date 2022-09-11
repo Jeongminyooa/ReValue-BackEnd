@@ -17,6 +17,9 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(ErrorCode.INTER_SERVER_ERROR);
     }
 
+    /**
+     * enum 타입이 맞지 않을 때 발생
+     */
     @ExceptionHandler(NoEnumException.class)
     public ErrorResponse handleNoEnumException(NoEnumException ex) {
         log.error("handleNoEnumException", ex);
@@ -31,5 +34,14 @@ public class GlobalExceptionHandler {
             MaxUploadSizeExceededException e) {
         log.error("handleMaxUploadSizeExceededException", e);
         return new ErrorResponse(ErrorCode.FILE_SIZE_EXCEED);
+    }
+
+    /**
+     * 파일 개수 초과시 발생
+     */
+    @ExceptionHandler(MaxUploadNumberExceededException.class)
+    protected ErrorResponse handleMaxUploadNumberExceedeException(MaxUploadNumberExceededException ex) {
+        log.error("handleMaxUploadNumberExceedeException", ex);
+        return new ErrorResponse(ex.getErrorCode());
     }
 }

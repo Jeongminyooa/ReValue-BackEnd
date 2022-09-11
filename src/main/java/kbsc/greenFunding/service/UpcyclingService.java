@@ -42,11 +42,12 @@ public class UpcyclingService {
 
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
-        Upcycling upCycling = Upcycling.upcyclingBuilder()
+        Upcycling upCycling = Upcycling.builder()
                 .title(upcyclingRewardReq.getTitle())
                 .price(upcyclingRewardReq.getPrice())
                 .description(upcyclingRewardReq.getDescription())
                 .totalCount(upcyclingRewardReq.getTotalCount())
+                .remainingCount(upcyclingRewardReq.getTotalCount())
                 .build();
         upCycling.setProject(project);
         upcyclingJpaRepo.save(upCycling);

@@ -5,7 +5,9 @@ import kbsc.greenFunding.dto.project.ProjectPlanReq;
 import kbsc.greenFunding.dto.project.ProjectTypeReq;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
+import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.entity.Project;
+import kbsc.greenFunding.exception.NoEnumException;
 import kbsc.greenFunding.service.AwsS3Service;
 import kbsc.greenFunding.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -55,10 +57,16 @@ public class ProjectController {
 
     @PostMapping("/{id}/saved-content")
     public ApiResponse<Long> saveProjectDescription(@PathVariable("id") Long projectId,
+                                                       @RequestPart("content") String content,
                                                        @RequestPart("fileList") List<MultipartFile> fileList) {
+
+        // 이미지 예외처리
+        if(fileList.size() > 10) {
+            throw new NoEnumException("max upload file number exceeded", ErrorCode.MAX_NUMBER_FILE_EXCEED);
+        }
         List<String> fileUrlList = awsS3Service.uploadImage(fileList);
 
-        projectId = projectService.postProjectDescr(projectId, fileUrlList);
+        projectId = projectService.postProjectContent(projectId, content, fileUrlList);
 
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
