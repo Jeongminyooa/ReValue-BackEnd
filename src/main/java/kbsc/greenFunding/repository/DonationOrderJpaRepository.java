@@ -13,9 +13,6 @@ public interface DonationOrderJpaRepository extends JpaRepository<DonationOrder,
     Long countAllByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     Long countAllByDonation(Donation donation);
-<<<<<<< HEAD
-
     List<DonationOrder> findAllByUser(User user);
-=======
->>>>>>> main
+
 }
