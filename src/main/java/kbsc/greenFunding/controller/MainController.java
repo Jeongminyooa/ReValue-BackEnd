@@ -7,6 +7,8 @@ import kbsc.greenFunding.dto.main.UpcyclingReq;
 import kbsc.greenFunding.dto.response.ApiCode;
 import kbsc.greenFunding.dto.response.ApiResponse;
 import kbsc.greenFunding.entity.DonationMethod;
+import kbsc.greenFunding.entity.MaterialCategory;
+import kbsc.greenFunding.entity.ProjectType;
 import kbsc.greenFunding.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,13 @@ public class MainController {
     private final MainService mainService;
 
     @GetMapping("")
-    public ApiResponse<MainListRes> getMainList() {
-        MainListRes mainList = mainService.getMainList();
+    public ApiResponse<MainListRes> getMainList(@RequestParam("projectType") String type,
+                                                @RequestParam("category")String category) {
+
+        ProjectType projectType = ProjectType.valueOf(type);
+        MaterialCategory materialCategory = MaterialCategory.valueOf(category);
+
+        MainListRes mainList = mainService.getMainList(projectType, materialCategory);
 
         return ApiResponse.success(ApiCode.SUCCESS, mainList);
     }

@@ -24,7 +24,7 @@ public class MainService {
     private final UserJpaRepository userJpaRepository;
     private final UpcyclingOrderItemRepository upcyclingOrderItemRepository;
 
-    public MainListRes getMainList() {
+    public MainListRes getMainList(ProjectType projectType, MaterialCategory category) {
         MainProjectListRes.MainProjectListResBuilder projectBuilder = MainProjectListRes.builder();
         List<MainProjectListRes> projectResList = new ArrayList<>();
 
@@ -35,11 +35,27 @@ public class MainService {
         Long upcyclingCount = upcyclingOrderJpaRepository.countAllByOrderDateBetween(startDate, endDate);
         Long totalCount = donationCount + upcyclingCount;
 
-        List<Project> projects = projectRepository.findAllWithDonation();
-
         /**
-         *     private int donationRate, int rewardRate;
+         * projectType, category에 따라서 projects 리스트 불러오기
          */
+        List<Project> projects = new ArrayList<>();
+        if(projectType.equals(ProjectType.ALL)) {
+            if(category.equals(MaterialCategory.ALL)) {
+                projects = projectRepository.findAllWithDonation();
+            }
+            else {
+                projects = projectRepository.findALlWithDonationByCategory(category);
+            }
+        }
+        else {
+            if(category.equals(MaterialCategory.ALL)) { // 소재 유형 - 전체보기
+                projects = projectRepository.findAllWithDonationByType(projectType);
+            }
+            else { // 소재에 따라 검색
+                projects = projectRepository.findAllWithDonationByTypeAndCategory(projectType, category);
+            }
+        }
+
         int donationRate = 0, rewardRate = 0;
 
         for(Project project : projects) {
@@ -76,6 +92,8 @@ public class MainService {
 
         Project project = projectRepository.getProjectDetail(projectId);
 
+        Long donationParticipants = Long.valueOf(0);
+
         int rewardRemainingCount = 0; // 리워드 잔여 수량
         int rewardTotalCount = 0;
 
@@ -103,10 +121,12 @@ public class MainService {
         if(!project.getProjectType().equals(ProjectType.REWARD)) { //Donation을 체크해야하는 경우
             // 기부[기부ID, 기부 최소 단위, 기부 방법]
             Donation donation = project.getDonation();
+            donationParticipants = donationOrderJpaRepository.countAllByDonation(donation);
             projectBuilder.donationDetail(
                     DonationDetailRes.builder().donationId(donation.getId())
-                    .method(donation.getMethod()).minWeight(donation.getMinWeight()).build()
+                    .method(donation.getMethod()).minWeight(donation.getMinWeight()).address(donation.getAddress()).build()
             );
+            projectBuilder.donationParticipants(donationParticipants);
         }
 
         ProjectDetailRes projectDetailRes = projectBuilder.build();
