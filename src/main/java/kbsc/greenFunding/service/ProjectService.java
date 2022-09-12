@@ -123,4 +123,9 @@ public class ProjectService {
 
         return project.getId();
     }
+
+    @Transactional
+    public void deleteProject(Long projectId) {
+        projectJpaRepo.deleteById(projectId);
+    }
 }

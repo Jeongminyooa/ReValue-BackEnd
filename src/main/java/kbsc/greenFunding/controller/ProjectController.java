@@ -71,4 +71,10 @@ public class ProjectController {
         return ApiResponse.success(ApiCode.SUCCESS, projectId);
     }
 
+    @DeleteMapping("/{id}")
+    public ApiResponse cancelProject(@PathVariable("id")Long projectId) {
+        projectService.deleteProject(projectId);
+        return ApiResponse.success(ApiCode.SUCCESS, null);
+    }
+
 }
