@@ -86,10 +86,10 @@ public class Project {
     }
 
     // update project info
-    public void updateProjectInfo(String title, String thumbnail, String content) {
+    public void updateProjectInfo(String title, String thumbnail, String summary) {
         this.title = title;
         this.thumbnail = thumbnail;
-        this.content = content;
+        this.summary = summary;
     }
 
     public void updateProjectPlan(LocalDateTime startDate, LocalDateTime endDate) {
@@ -98,9 +98,13 @@ public class Project {
     }
 
     public void updateAmount(int amount, int remainingAmount) {
-        if(Integer.valueOf(this.amount) == null) {
+        if(this.amount == 0) {
             this.amount = amount;
         }
         this.remainingAmount = remainingAmount;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }

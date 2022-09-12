@@ -28,6 +28,7 @@ public class ProjectService {
     private final DonationJpaRepository donationJpaRepo;
     private final ImageJpaRepository imageJpaRepo;
 
+
     // 프로젝트 type, category 저장
     @Transactional(rollbackFor=Exception.class)
     public Long postProjectType(Long userId, ProjectTypeReq projectTypeReq) {
@@ -49,14 +50,10 @@ public class ProjectService {
 
     // 프로젝트 info 저장
     @Transactional
-    public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageName, Long projectId) {
-        StringBuilder imageUrl = new StringBuilder();
-        imageUrl.append("https://revalue.s3.us-west-2.amazonaws.com/");
-        imageUrl.append(imageName);
-
+    public Long postProjectInfo(ProjectInfoReq projectInfoReq, String imageUrl, Long projectId) {
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
-        project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl.toString(), projectInfoReq.getContent());
+        project.updateProjectInfo(projectInfoReq.getTitle(), imageUrl, projectInfoReq.getSummary());
 
        return project.getId();
     }
@@ -70,10 +67,11 @@ public class ProjectService {
         if(project.getProjectType() == ProjectType.ALL) {
             // 기존 정보가 있는지 확인
             if(project.getDonation() != null) {
-                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight());
+                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight(), projectPlanReq.getTotalWeight());
             } else {
                 Donation donation = Donation.donationBuilder()
                         .totalWeight(projectPlanReq.getTotalWeight())
+                        .remainingWeight(projectPlanReq.getTotalWeight())
                         .build();
 
                 donationJpaRepo.save(donation);
@@ -85,7 +83,7 @@ public class ProjectService {
         } else if(project.getProjectType() == ProjectType.DONATION) {
             // 기존 정보가 있는지 확인
             if(project.getDonation() != null) {
-                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight());
+                project.getDonation().updateTotalWeight(projectPlanReq.getTotalWeight(), projectPlanReq.getTotalWeight());
             } else {
                 Donation donation = Donation.donationBuilder()
                         .totalWeight(projectPlanReq.getTotalWeight())
@@ -104,19 +102,15 @@ public class ProjectService {
     }
 
     @Transactional(rollbackFor=Exception.class)
-    public Long postProjectDescr(Long projectId, List<String> fileUrlList) {
+    public Long postProjectContent (Long projectId, String content, List<String> fileUrlList) {
         Project project = projectJpaRepo.findById(projectId).orElseThrow();
 
         List<Image> imageEntityList = new ArrayList<Image>();
 
         // 이미지 파일 DB 관리
         fileUrlList.forEach(fileUrl -> {
-            StringBuilder imageUrl = new StringBuilder();
-            imageUrl.append("https://revalue.s3.us-west-2.amazonaws.com/");
-            imageUrl.append(fileUrl);
-
             Image image = Image.builder()
-                    .fileUrl(imageUrl.toString())
+                    .fileUrl(fileUrl)
                     .build();
             image.setProject(project);
 
@@ -125,8 +119,13 @@ public class ProjectService {
 
         imageJpaRepo.saveAll(imageEntityList);
 
-        // project.updateDescription(description);
+        project.updateContent(content);
 
         return project.getId();
+    }
+
+    @Transactional
+    public void deleteProject(Long projectId) {
+        projectJpaRepo.deleteById(projectId);
     }
 }

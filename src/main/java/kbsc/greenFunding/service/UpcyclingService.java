@@ -47,6 +47,7 @@ public class UpcyclingService {
                 .price(upcyclingRewardReq.getPrice())
                 .description(upcyclingRewardReq.getDescription())
                 .totalCount(upcyclingRewardReq.getTotalCount())
+                .remainingCount(upcyclingRewardReq.getTotalCount())
                 .build();
         upCycling.setProject(project);
         upcyclingJpaRepo.save(upCycling);

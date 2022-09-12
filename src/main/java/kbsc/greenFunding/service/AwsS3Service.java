@@ -30,13 +30,16 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
 
+    @Value("${cloud.aws.file_url_format}")
+    public String fileUrlFormat;
+
     // 복수개 이미지 업로드
     public List<String> uploadImage(List<MultipartFile> multipartFile) {
         List<String> fileNameList = new ArrayList<>();
 
         multipartFile.forEach(file -> {
             String fileName = uploadImage(file);
-            fileNameList.add(fileName);
+            fileNameList.add(fileUrlFormat + fileName);
         });
 
         return fileNameList;
@@ -58,7 +61,7 @@ public class AwsS3Service {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
         }
 
-        return fileName;
+        return fileUrlFormat + fileName;
     }
 
 
