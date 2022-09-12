@@ -1,8 +1,6 @@
 package kbsc.greenFunding.repository;
 
-import kbsc.greenFunding.entity.MaterialCategory;
-import kbsc.greenFunding.entity.Project;
-import kbsc.greenFunding.entity.ProjectType;
+import kbsc.greenFunding.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +49,13 @@ public class ProjectRepository {
                         " where p.projectType=:type  and p.category=:category", Project.class)
                 .setParameter("type", type)
                 .setParameter("category", category)
+                .getResultList();
+    }
+
+    public List<Project> findAllByDonation(List<Donation> donations) {
+        return em.createQuery("select distinct p from Project p" +
+                " where p.donation IN (:donations)")
+                .setParameter("donations", donations)
                 .getResultList();
     }
 }

@@ -1,8 +1,6 @@
 package kbsc.greenFunding.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +8,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DonationOrder {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
