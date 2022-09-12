@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
         log.error("handleException", ex);
         return new ErrorResponse(ErrorCode.INTER_SERVER_ERROR);
     }
-
     /**
      * enum 타입이 맞지 않을 때 발생
      */
