@@ -22,7 +22,7 @@ public class MainService {
     private final DonationJpaRepository donationJpaRepository;
     private final UpcyclingJpaRepository upcyclingJpaRepository;
     private final UserJpaRepository userJpaRepository;
-    private final UpcyclingOrderItemRepository upcyclingOrderItemRepository;
+    private final UpcyclingOrderItemJpaRepository upcyclingOrderItemJpaRepository;
 
     public MainListRes getMainList(ProjectType projectType, MaterialCategory category) {
         MainProjectListRes.MainProjectListResBuilder projectBuilder = MainProjectListRes.builder();
@@ -178,7 +178,7 @@ public class MainService {
             UpcyclingOrderItem orderItem
                     = UpcyclingOrderItem.builder().upcycling(upcycling).count(upcyclingReq.getCount()).build();
 
-            upcyclingOrderItemRepository.save(orderItem);
+            upcyclingOrderItemJpaRepository.save(orderItem);
             upcycling.updateRemainingCount(upcyclingReq.getCount()); // 리워드별 잔여수량 update
             totalAmount += upcycling.getPrice() * upcyclingReq.getCount(); // project별 totalAmount 계산
 
