@@ -1,7 +1,6 @@
 package kbsc.greenFunding.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +9,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpcyclingOrder {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,8 @@ public class UpcyclingOrder {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "upcyclingOrder")
+    @Builder.Default
+    @OneToMany(mappedBy = "upcyclingOrder", cascade = CascadeType.ALL)
     private List<UpcyclingOrderItem> orderItemList = new ArrayList<>();
 
     private LocalDateTime orderDate;

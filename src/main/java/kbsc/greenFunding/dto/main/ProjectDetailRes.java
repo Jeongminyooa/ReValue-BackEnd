@@ -4,6 +4,8 @@ import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.ProjectType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +34,7 @@ public class ProjectDetailRes {
     private int rewardTotalCount; // 리워드 총 수
     private int donationTotalWeight; // 기부 목표 무게
     private int donationRemainingWeight; // 기부 잔여 무게
+    private Long donationParticipants; // 기부 참여자 수
     private List<String> imgList;
     private String content;
 

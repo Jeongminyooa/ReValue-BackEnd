@@ -1,5 +1,12 @@
 package kbsc.greenFunding.repository;
 
+<<<<<<< HEAD
+import kbsc.greenFunding.entity.UpcyclingOrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UpcyclingOrderItemRepository extends JpaRepository<UpcyclingOrderItem, Long> {
+}
+=======
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,3 +29,4 @@ public class UpcyclingOrderItemRepository {
                 .getResultList();
     }
 }
+>>>>>>> main

@@ -1,13 +1,14 @@
 package kbsc.greenFunding.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpcyclingOrderItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
