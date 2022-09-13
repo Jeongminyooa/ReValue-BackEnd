@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/upcyclings")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class UpcyclingController {
     private final UpcyclingService upcyclingService;
 

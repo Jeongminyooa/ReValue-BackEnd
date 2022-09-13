@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/owners")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class OwnerController {
 
     private final OwnerService ownerService;

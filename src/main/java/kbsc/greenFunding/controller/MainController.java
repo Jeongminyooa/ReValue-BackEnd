@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/main")
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class MainController {
 
     private final MainService mainService;
