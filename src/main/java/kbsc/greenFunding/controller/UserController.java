@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiResponse<Long> login(@RequestBody UserLoginReq userLoginReq) {
+    public ApiResponse<String> login(@RequestBody UserLoginReq userLoginReq) {
         return ApiResponse.success(ApiCode.SUCCESS, userService.login(userLoginReq));
     }
 

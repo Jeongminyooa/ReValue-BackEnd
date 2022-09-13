@@ -21,6 +21,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	implementation 'mysql:mysql-connector-java'
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
 	compileOnly 'org.projectlombok:lombok'
