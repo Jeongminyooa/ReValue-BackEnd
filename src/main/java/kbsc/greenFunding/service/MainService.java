@@ -126,7 +126,7 @@ public class MainService {
                     DonationDetailRes.builder().donationId(donation.getId())
                     .method(donation.getMethod()).minWeight(donation.getMinWeight()).address(donation.getAddress()).build()
             );
-            projectBuilder.donationParticipants(donationParticipants);
+            projectBuilder.donationTotalWeight(donation.getTotalWeight()).donationRemainingWeight(donation.getRemainingWeight()).donationParticipants(donationParticipants);
         }
 
         ProjectDetailRes projectDetailRes = projectBuilder.build();

@@ -31,15 +31,17 @@ public class ProjectRepository {
 
     public List<Project> findAllWithDonationByType(ProjectType type) {
         return em.createQuery("select distinct p from Project  p" +
-                " join fetch p.donation d where p.projectType=:type", Project.class)
+                " join fetch p.donation d where p.projectType in (:type, :all)", Project.class)
                 .setParameter("type", type)
+                .setParameter("all", ProjectType.ALL)
                 .getResultList();
     }
 
     public List<Project> findALlWithDonationByCategory(MaterialCategory category) {
         return em.createQuery("select distinct p from Project  p" +
-                        " join fetch p.donation d where p.category=:category", Project.class)
+                        " join fetch p.donation d where p.category in (:category, :all)", Project.class)
                 .setParameter("category", category)
+                .setParameter("all", ProjectType.ALL)
                 .getResultList();
     }
 
