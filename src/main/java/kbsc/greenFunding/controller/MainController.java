@@ -26,7 +26,6 @@ public class MainController {
     @GetMapping("")
     public ApiResponse<MainListRes> getMainList(@RequestParam("projectType") String type,
                                                 @RequestParam("category")String category) {
-
         ProjectType projectType = ProjectType.valueOf(type);
         MaterialCategory materialCategory = MaterialCategory.valueOf(category);
 
