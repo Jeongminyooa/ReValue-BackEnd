@@ -36,8 +36,8 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String makeJwtToken(String userId) {
-        Claims claims = Jwts.claims().setSubject(userId);
+    public String makeJwtToken(Long userId) {
+        Claims claims = Jwts.claims().setSubject(Long.toString(userId));
         Date now = new Date();
 
         return Jwts.builder()
@@ -51,14 +51,16 @@ public class JwtTokenProvider {
 
     // 인증 성공시 SecurityContextHolder에 저장할 Authentication 객체 생성
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(this.getUserPk(token)));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // Jwt Token에서 User PK 추출
-    public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().getSubject();
+    public Long getUserPk(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody();
+
+        return Long.valueOf(claims.getSubject());
     }
 
     public String getJwtFromRequest(HttpServletRequest request) {

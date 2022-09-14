@@ -65,8 +65,8 @@ public class UserService {
         // 패스워드 일치 여부 확인
         passwordMustBeSame(loginReq.getPw(), user.getPw());
 
-        // userId (사용자 아이디)로 토큰 생성
-        String token = jwtTokenProvider.makeJwtToken(user.getUserId());
+        // user pk로 토큰 생성
+        String token = jwtTokenProvider.makeJwtToken(user.getId());
 
         return token;
     }

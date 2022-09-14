@@ -9,10 +9,12 @@ import kbsc.greenFunding.dto.response.ApiResponse;
 import kbsc.greenFunding.entity.DonationMethod;
 import kbsc.greenFunding.entity.MaterialCategory;
 import kbsc.greenFunding.entity.ProjectType;
+import kbsc.greenFunding.security.jwt.JwtTokenProvider;
 import kbsc.greenFunding.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,7 @@ import java.util.List;
 public class MainController {
 
     private final MainService mainService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("")
     public ApiResponse<MainListRes> getMainList(@RequestParam("projectType") String type,
@@ -41,14 +44,22 @@ public class MainController {
     }
 
     @PostMapping("/donation")
-    public ApiResponse<Long> saveDonation(@RequestBody DonationReq donationReq) {
-        Long orderId = mainService.saveDonation(donationReq);
+    public ApiResponse<Long> saveDonation(@RequestBody DonationReq donationReq,
+                                          HttpServletRequest req) {
+        String token = jwtTokenProvider.getJwtFromRequest(req);
+        Long userId = jwtTokenProvider.getUserPk(token);
+
+        Long orderId = mainService.saveDonation(donationReq, userId);
         return ApiResponse.success(ApiCode.SUCCESS, orderId);
     }
 
     @PostMapping("/reward")
-    public ApiResponse<Long> saveReward(@RequestBody List<UpcyclingReq> upcyclingReqs) {
-        Long orderId = mainService.saveReward(upcyclingReqs);
+    public ApiResponse<Long> saveReward(@RequestBody List<UpcyclingReq> upcyclingReqs,
+                                        HttpServletRequest req) {
+        String token = jwtTokenProvider.getJwtFromRequest(req);
+        Long userId = jwtTokenProvider.getUserPk(token);
+
+        Long orderId = mainService.saveReward(upcyclingReqs, userId);
         return ApiResponse.success(ApiCode.SUCCESS, orderId);
     }
 
