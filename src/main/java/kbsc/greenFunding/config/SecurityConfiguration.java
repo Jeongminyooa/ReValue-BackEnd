@@ -1,12 +1,12 @@
 package kbsc.greenFunding.config;
 
-import kbsc.greenFunding.jwt.JwtAuthenticationFilter;
-import kbsc.greenFunding.jwt.JwtTokenProvider;
+import kbsc.greenFunding.security.AccessDeniedHandlerImpl;
+import kbsc.greenFunding.security.RestAuthenticationEntryPoint;
+import kbsc.greenFunding.security.jwt.JwtAuthenticationFilter;
+import kbsc.greenFunding.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,7 +29,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers("/join", "/login", "/projects/**", "/donations/**", "/upcyclings/**").permitAll()
+                .antMatchers("/main", "/join", "/login", "/projects/**", "/donations/**", "/upcyclings/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()
@@ -37,6 +37,10 @@ public class SecurityConfiguration {
                 .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(new AccessDeniedHandlerImpl())
+                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider) ,
                         UsernamePasswordAuthenticationFilter.class)

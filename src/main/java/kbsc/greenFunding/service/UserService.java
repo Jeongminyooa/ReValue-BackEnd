@@ -1,23 +1,19 @@
 package kbsc.greenFunding.service;
 
-import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.dto.user.MyPageProjectRes;
 import kbsc.greenFunding.dto.user.MyPageRes;
 import kbsc.greenFunding.dto.user.UserLoginReq;
 import kbsc.greenFunding.dto.user.UserSignUpReq;
 import kbsc.greenFunding.entity.*;
-import kbsc.greenFunding.exception.NoEnumException;
-import kbsc.greenFunding.jwt.JwtTokenProvider;
+import kbsc.greenFunding.security.jwt.JwtTokenProvider;
 import kbsc.greenFunding.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

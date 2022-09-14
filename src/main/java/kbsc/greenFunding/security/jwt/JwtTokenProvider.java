@@ -1,4 +1,4 @@
-package kbsc.greenFunding.jwt;
+package kbsc.greenFunding.security.jwt;
 
 import io.jsonwebtoken.*;
 import kbsc.greenFunding.dto.user.UserRes;
@@ -71,15 +71,8 @@ public class JwtTokenProvider {
 
     // Jwt Token의 유효성 및 만료 기간 검사
     public boolean validateToken(String jwtToken) {
-        try {
-            System.out.println("만료 검사 시작");
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            System.out.println(!claims.getBody().getExpiration().before(new Date()));
-            System.out.println("만료 검사 끝");
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
+        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return true;
     }
 
 }
