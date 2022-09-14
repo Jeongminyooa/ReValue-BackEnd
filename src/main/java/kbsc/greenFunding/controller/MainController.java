@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/main")
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class MainController {
 
     private final MainService mainService;
@@ -28,7 +29,6 @@ public class MainController {
     @GetMapping("")
     public ApiResponse<MainListRes> getMainList(@RequestParam("projectType") String type,
                                                 @RequestParam("category")String category) {
-
         ProjectType projectType = ProjectType.valueOf(type);
         MaterialCategory materialCategory = MaterialCategory.valueOf(category);
 

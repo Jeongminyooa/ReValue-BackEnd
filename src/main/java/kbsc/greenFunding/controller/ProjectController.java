@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/projects")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class ProjectController {
 
     private final ProjectService projectService;
