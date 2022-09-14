@@ -1,21 +1,19 @@
 package kbsc.greenFunding.service;
 
-import kbsc.greenFunding.dto.response.ErrorCode;
 import kbsc.greenFunding.dto.user.MyPageProjectRes;
 import kbsc.greenFunding.dto.user.MyPageRes;
 import kbsc.greenFunding.dto.user.UserLoginReq;
 import kbsc.greenFunding.dto.user.UserSignUpReq;
 import kbsc.greenFunding.entity.*;
-import kbsc.greenFunding.exception.NoEnumException;
+import kbsc.greenFunding.security.jwt.JwtTokenProvider;
 import kbsc.greenFunding.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserJpaRepository userJpaRepository;
     private final DonationOrderJpaRepository donationOrderJpaRepository;
@@ -35,7 +36,10 @@ public class UserService {
             // throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
-        User user = User.builder().userId(signUpReq.getUserId()).pw(signUpReq.getPw())
+        // pw 암호화
+        String encodingPassword = bCryptPasswordEncoder.encode(signUpReq.getPw());
+
+        User user = User.builder().userId(signUpReq.getUserId()).pw(encodingPassword)
                 .name(signUpReq.getName()).birth(signUpReq.getBirth()).gender(signUpReq.getGender())
                 .tel(signUpReq.getTel()).agreement(signUpReq.isAgreement())
                 .signDate(LocalDateTime.now()).build();
@@ -54,16 +58,23 @@ public class UserService {
     */
 
     @Transactional
-    public Long login(UserLoginReq loginReq) {
+    public String login(UserLoginReq loginReq) {
         User user = userJpaRepository.findByUserId(loginReq.getId())
                 .orElseThrow(() -> new IllegalArgumentException("가입된 아이디가 아닙니다."));
 
-        String pw = loginReq.getPw();
+        // 패스워드 일치 여부 확인
+        passwordMustBeSame(loginReq.getPw(), user.getPw());
 
-        if(!user.getPw().equals(pw)) { // 로그인 실패
+        // user pk로 토큰 생성
+        String token = jwtTokenProvider.makeJwtToken(user.getId());
+
+        return token;
+    }
+
+    private void passwordMustBeSame(String requestPassword, String password) {
+        if (!bCryptPasswordEncoder.matches(requestPassword, password)) {
             throw new IllegalArgumentException();
         }
-        return user.getId();
     }
 
     @Transactional

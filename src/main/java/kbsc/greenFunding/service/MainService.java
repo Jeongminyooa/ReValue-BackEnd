@@ -130,22 +130,27 @@ public class MainService {
         }
 
         ProjectDetailRes projectDetailRes = projectBuilder.build();
+
         return projectDetailRes;
     }
 
-    public Long saveDonation(DonationReq donationReq) {
+    public Long saveDonation(DonationReq donationReq, Long userId) {
         Donation donation = donationJpaRepository.findById(donationReq.getDonationId())
                 .orElseThrow();
+
+        User user = userJpaRepository.findById(userId).orElseThrow();
 
         DonationOrder order = DonationOrder.builder()
                 .weight(donationReq.getWeight())
                 .orderDate(LocalDateTime.now())
-                .donation(donation).build();
-                // user 아직 안 넣음
+                .donation(donation)
+                .user(user)
+                .build();
 
         // 잔여 무게 -= 현재 신청 무게 하기
         donation.setRemainingWeight(donation.getRemainingWeight() - donationReq.getWeight());
         donationOrderJpaRepository.save(order);
+
         return order.getId();
     }
 
@@ -155,12 +160,12 @@ public class MainService {
      * 리워드별 잔여 수량(remainingCount) 계산
      */
     @Transactional
-    public Long saveReward(List<UpcyclingReq> upcyclingReqs) {
-        Long userId = Long.valueOf(1);
+    public Long saveReward(List<UpcyclingReq> upcyclingReqs, Long userId) {
         User user = userJpaRepository.findById(userId)
                 .orElseThrow();
 
         int totalAmount = 0;
+
         // (user, 오늘 날짜)로 upcyclingOrder 생성
         UpcyclingOrder order = UpcyclingOrder.builder().user(user).orderDate(LocalDateTime.now()).build();
         upcyclingOrderJpaRepository.save(order);
@@ -184,7 +189,7 @@ public class MainService {
 
             order.addOrderItemList(orderItem); // UpcyclingOrder에 item 추가
         }
-        System.out.println("totalAmount = " + totalAmount);
+
         // project의 totalAmount를 update
         project.updateRemainingAmount(totalAmount);
 

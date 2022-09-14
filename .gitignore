@@ -9,6 +9,7 @@
 application.properties
 application-aws.properties
 application-credentials.properties
+application-jwt.properties
 
 # User-specific stuff
 .idea/**/workspace.xml
