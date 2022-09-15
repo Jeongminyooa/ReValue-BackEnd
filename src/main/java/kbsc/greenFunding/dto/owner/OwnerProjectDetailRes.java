@@ -29,6 +29,7 @@ public class OwnerProjectDetailRes {
     @AllArgsConstructor
     @Data
     public static class DonationDetailRes {
+        private int donationRate; // 기부 달성량
         private int totalWeight; // 목표 기부량
         private int minWeight; // 최소 기부량
         private int fundingWeight; // 모인 소재 용량
@@ -42,6 +43,7 @@ public class OwnerProjectDetailRes {
     @AllArgsConstructor
     @Data
     public static class UpcyclingDetailRes {
+        private int upcyclingRate; // 업사이클링 리워드 달성량
         private int amount; // 목표 금액
         private int fundingAmount; // 총 펀딩 금액
         private Long totalSupporter; // 총 서포터 수

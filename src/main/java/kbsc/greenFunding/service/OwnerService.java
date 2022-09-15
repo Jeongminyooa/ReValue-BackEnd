@@ -22,7 +22,6 @@ public class OwnerService {
     private final UserJpaRepository userJpaRepo;
     private final ProjectJpaRepository projectJpaRepo;
     private final DonationOrderJpaRepository donationOrderJpaRepo;
-    private final UpcyclingOrderJpaRepository upcyclingOrderJpaRepo;
     private final UpcyclingOrderItemRepository upcyclingOrderItemRepo;
 
     @Transactional(readOnly = true)
@@ -104,6 +103,7 @@ public class OwnerService {
 
         OwnerProjectDetailRes.OwnerProjectDetailResBuilder projectBuilder = OwnerProjectDetailRes.builder();
 
+        int donationRate = 0, rewardRate = 0;
         int fundingWeight = 0, fundingAmount = 0;
 
         ProjectType type = project.getProjectType();
@@ -130,6 +130,8 @@ public class OwnerService {
         if(type.equals(ProjectType.ALL)) { // 기부 & 리워드
             Donation donation = project.getDonation();
 
+            // 기부 달성률 = (기부.목표 무게 - 기부.잔여무게) / 기부.목표무게 * 100
+            donationRate = ((donation.getTotalWeight() - donation.getRemainingWeight()) * 100) / donation.getTotalWeight();
             // 기부 달성량 (무게) = totalWeight - remainingWeight
             fundingWeight = donation.getTotalWeight() - donation.getRemainingWeight();
             // 총 서포터 수
@@ -138,6 +140,7 @@ public class OwnerService {
             projectBuilder
                     .donationDetailRes(
                             new OwnerProjectDetailRes.DonationDetailRes(
+                                    donationRate,
                                     donation.getTotalWeight(),
                                     donation.getMinWeight(),
                                     fundingWeight,
@@ -149,6 +152,8 @@ public class OwnerService {
 
             List<Upcycling> upcyclingList = project.getUpcyclingList();
 
+            // project의 달성률 = (목표금액 - 잔여금액) / 목표금액 * 100
+            rewardRate = ((project.getAmount() - project.getRemainingAmount()) * 100) / project.getAmount();
            // 업사이클링 달성량 (금액) = amount - remainingAmount
             fundingAmount = project.getAmount() - project.getRemainingAmount();
 
@@ -170,6 +175,7 @@ public class OwnerService {
             projectBuilder
                     .upcyclingDetailRes(
                             new OwnerProjectDetailRes.UpcyclingDetailRes(
+                                    rewardRate,
                                     project.getAmount(),
                                     fundingAmount,
                                     totalSupporter,
@@ -179,6 +185,10 @@ public class OwnerService {
         else if(type.equals(ProjectType.DONATION)) { // 기부만
             Donation donation = project.getDonation();
 
+
+            // 기부 달성률 = (기부.목표 무게 - 기부.잔여무게) / 기부.목표무게 * 100
+            donationRate = ((donation.getTotalWeight() - donation.getRemainingWeight()) * 100) / donation.getTotalWeight();
+
             // 기부 달성량 (무게) = totalWeight - remainingWeight
             fundingWeight = donation.getTotalWeight() - donation.getRemainingWeight();
             // 총 서포터 수
@@ -187,6 +197,7 @@ public class OwnerService {
             projectBuilder
                     .donationDetailRes(
                             new OwnerProjectDetailRes.DonationDetailRes(
+                                    donationRate,
                                     donation.getTotalWeight(),
                                     donation.getMinWeight(),
                                     fundingWeight,
@@ -201,6 +212,8 @@ public class OwnerService {
         else if(type.equals(ProjectType.REWARD)){ // 리워드만
             List<Upcycling> upcyclingList = project.getUpcyclingList();
 
+            // project의 달성률 = (목표금액 - 잔여금액) / 목표금액 * 100
+            rewardRate = ((project.getAmount() - project.getRemainingAmount()) * 100) / project.getAmount();
             // 업사이클링 달성량 (금액) = amount - remainingAmount
             fundingAmount = project.getAmount() - project.getRemainingAmount();
 
@@ -222,6 +235,7 @@ public class OwnerService {
             projectBuilder
                     .upcyclingDetailRes(
                             new OwnerProjectDetailRes.UpcyclingDetailRes(
+                                    rewardRate,
                                     project.getAmount(),
                                     fundingAmount,
                                     totalSupporter,
