@@ -49,7 +49,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers("/main", "/join", "/login", "/projects/**", "/donations/**", "/upcyclings/**").permitAll()
+                .antMatchers("/main", "/join", "/login", "/projects/**", "/donations/**", "/upcyclings/**", "/owners", "/owners/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()
